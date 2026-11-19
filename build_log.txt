@@ -1,0 +1,89 @@
+Launching lib/main.dart on sdk gphone64 arm64 in debug mode...
+Running Gradle task 'assembleDebug'...                          
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Running Gradle task 'assembleDebug'...                             31.1s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        2,774ms
+D/FlutterJNI( 3475): Beginning load of flutter...
+D/FlutterJNI( 3475): flutter (null) was loaded normally!
+I/flutter ( 3475): [IMPORTANT:flutter/shell/platform/android/android_context_gl_impeller.cc(104)] Using the Impeller rendering backend (OpenGLES).
+Syncing files to device sdk gphone64 arm64...                   
+I/Choreographer( 3475): Skipped 36 frames!  The application may be doing too much work on its main thread.
+D/FirebaseAuth( 3475): Notifying id token listeners about user ( rdisE4NULwZBrfnOOmfPiDvp5jv2 ).
+Syncing files to device sdk gphone64 arm64...                      714ms
+
+Flutter run key commands.
+r Hot reload. 🔥🔥🔥
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on sdk gphone64 arm64 is available at: http://127.0.0.1:63639/6El1SIrL2EQ=/
+The Flutter DevTools debugger and profiler on sdk gphone64 arm64 is available at: http://127.0.0.1:63639/6El1SIrL2EQ=/devtools/?uri=ws://127.0.0.1:63639/6El1SIrL2EQ=/ws
+
+I/Choreographer( 3475): Skipped 33 frames!  The application may be doing too much work on its main thread.
+D/EGL_emulation( 3475): app_time_stats: avg=18.65ms min=2.09ms max=152.53ms count=52
+W/WindowOnBackDispatcher( 3475): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 3475): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+W/System  ( 3475): Ignoring header X-Firebase-Locale because its value was null.
+W/DynamiteModule( 3475): Local module descriptor class for com.google.android.gms.providerinstaller.dynamite not found.
+D/TrafficStats( 3475): tagSocket(138) with statsTag=0xffffffff, statsUid=-1
+I/DynamiteModule( 3475): Considering local module com.google.android.gms.providerinstaller.dynamite:0 and remote module com.google.android.gms.providerinstaller.dynamite:0
+W/ProviderInstaller( 3475): Failed to load providerinstaller module: No acceptable module com.google.android.gms.providerinstaller.dynamite found. Local version is 0 and remote version is 0.
+D/ApplicationLoaders( 3475): Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+D/nativeloader( 3475): Configuring clns-8 for other apk /system/framework/com.android.location.provider.jar. target_sdk_version=37, uses_libraries=ALL, library_path=/data/app/~~Lzy71B98Bg0gylcnMbmNVw==/com.google.android.gms-VLJ6hKbZmzIKSmJzlK-Ffg==/lib/arm64:/data/app/~~Lzy71B98Bg0gylcnMbmNVw==/com.google.android.gms-VLJ6hKbZmzIKSmJzlK-Ffg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+D/nativeloader( 3475): Configuring clns-9 for other apk /system/framework/com.android.media.remotedisplay.jar. target_sdk_version=37, uses_libraries=ALL, library_path=/data/app/~~Lzy71B98Bg0gylcnMbmNVw==/com.google.android.gms-VLJ6hKbZmzIKSmJzlK-Ffg==/lib/arm64:/data/app/~~Lzy71B98Bg0gylcnMbmNVw==/com.google.android.gms-VLJ6hKbZmzIKSmJzlK-Ffg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+D/ApplicationLoaders( 3475): Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+D/ApplicationLoaders( 3475): Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+W/xample.chat_app( 3475): Loading /data/app/~~Lzy71B98Bg0gylcnMbmNVw==/com.google.android.gms-VLJ6hKbZmzIKSmJzlK-Ffg==/oat/arm64/base.odex non-executable as it requires an image which we failed to load
+D/nativeloader( 3475): Configuring clns-10 for other apk /data/app/~~Lzy71B98Bg0gylcnMbmNVw==/com.google.android.gms-VLJ6hKbZmzIKSmJzlK-Ffg==/base.apk. target_sdk_version=37, uses_libraries=, library_path=/data/app/~~Lzy71B98Bg0gylcnMbmNVw==/com.google.android.gms-VLJ6hKbZmzIKSmJzlK-Ffg==/lib/arm64:/data/app/~~Lzy71B98Bg0gylcnMbmNVw==/com.google.android.gms-VLJ6hKbZmzIKSmJzlK-Ffg==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+W/xample.chat_app( 3475): Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (unsupported, reflection, allowed)
+I/hmsf    ( 3475): Unable to retrieve flag snapshot for com.google.android.gms.providerinstaller#com.example.chat_app, using defaults.
+D/EGL_emulation( 3475): app_time_stats: avg=24.54ms min=3.42ms max=183.91ms count=45
+I/ProviderInstaller( 3475): Installed default security provider AndroidOpenSSL (via CompatProvider)
+W/hmsf    ( 3475): Failed to update snapshot for com.google.android.gms.providerinstaller#com.example.chat_app flags may be stale.
+W/hmsf    ( 3475): java.io.IOException: Unable to create parent directories of /data/user/0/com.google.android.gms/files/phenotype/shared/com.google.android.gms.providerinstaller#com.example.chat_app.pb
+W/hmsf    ( 3475): 	at ijnd.c(:com.google.android.gms@264531035@26.45.31 (260400-1020418964):36)
+W/hmsf    ( 3475): 	at hmzv.call(:com.google.android.gms@264531035@26.45.31 (260400-1020418964):19)
+W/hmsf    ( 3475): 	at iopd.a(:com.google.android.gms@264531035@26.45.31 (260400-1020418964):3)
+W/hmsf    ( 3475): 	at iood.run(:com.google.android.gms@264531035@26.45.31 (260400-1020418964):18)
+W/hmsf    ( 3475): 	at iope.run(:com.google.android.gms@264531035@26.45.31 (260400-1020418964):5)
+W/hmsf    ( 3475): 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)
+W/hmsf    ( 3475): 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+W/hmsf    ( 3475): 	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:307)
+W/hmsf    ( 3475): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+W/hmsf    ( 3475): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+W/hmsf    ( 3475): 	at java.lang.Thread.run(Thread.java:1012)
+D/TrafficStats( 3475): tagSocket(164) with statsTag=0xffffffff, statsUid=-1
+W/System  ( 3475): Ignoring header X-Firebase-Locale because its value was null.
+W/System  ( 3475): Ignoring header X-Firebase-Locale because its value was null.
+D/TrafficStats( 3475): tagSocket(165) with statsTag=0xffffffff, statsUid=-1
+D/TrafficStats( 3475): tagSocket(178) with statsTag=0xffffffff, statsUid=-1
+D/FirebaseAuth( 3475): Notifying id token listeners about user ( rdisE4NULwZBrfnOOmfPiDvp5jv2 ).
+W/Firestore( 3475): (26.0.2) [Firestore]: Listen for Query(target=Query(ProfilePhotos/yz6SuEwifZO283GXKOFZsi3KwBg2 order by __name__);limitType=LIMIT_TO_FIRST) failed: Status{code=PERMISSION_DENIED, description=Missing or insufficient permissions., cause=null}
+D/ProfileInstaller( 3475): Installing profile for com.example.chat_app
+W/Firestore( 3475): (26.0.2) [Firestore]: Listen for Query(target=Query(ProfilePhotos/XhqMNqFLbcgedyZcKk5JbSvCOsf1 order by __name__);limitType=LIMIT_TO_FIRST) failed: Status{code=PERMISSION_DENIED, description=Missing or insufficient permissions., cause=null}
+W/Firestore( 3475): (26.0.2) [Firestore]: Listen for Query(target=Query(ProfilePhotos/1S4tyxb7O6fCzEgMkRkq1Tqoc6f1 order by __name__);limitType=LIMIT_TO_FIRST) failed: Status{code=PERMISSION_DENIED, description=Missing or insufficient permissions., cause=null}
+W/Firestore( 3475): (26.0.2) [Firestore]: Listen for Query(target=Query(ProfilePhotos/yKT3u0SLf9fuNQapO2JmdAhcTJV2 order by __name__);limitType=LIMIT_TO_FIRST) failed: Status{code=PERMISSION_DENIED, description=Missing or insufficient permissions., cause=null}
+
+I/xample.chat_app( 3475): Background concurrent mark compact GC freed 8191KB AllocSpace bytes, 20(624KB) LOS objects, 49% free, 5177KB/10MB, paused 227us,6.039ms total 88.041ms
+W/xample.chat_app( 3475): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~_-ms5Be6PkAlEtTpphoanQ==/com.google.android.googlequicksearchbox--cXeS1hd6l-XGetdZx20bw==/base.apk' with 1 weak references
+W/xample.chat_app( 3475): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~_-ms5Be6PkAlEtTpphoanQ==/com.google.android.googlequicksearchbox--cXeS1hd6l-XGetdZx20bw==/split_config.xxhdpi.apk' with 1 weak references
+W/xample.chat_app( 3475): ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~_-ms5Be6PkAlEtTpphoanQ==/com.google.android.googlequicksearchbox--cXeS1hd6l-XGetdZx20bw==/split_lens_ondevice_engine_play_ml_module.apk' with 1 weak references
+W/xample.chat_app( 3475): ApkAssets: Deleting an ApkAssets object '<empty> and /product/app/talkback/talkback.apk' with 1 weak references
+W/xample.chat_app( 3475): ApkAssets: Deleting an ApkAssets object '/vendor/overlay/EmulatorTalkBackOverlay/EmulatorTalkBackOverlay.apk' with 1 weak references
+
+
+D/EGL_emulation( 3475): app_time_stats: avg=9935.80ms min=16.34ms max=58731.29ms count=6
+D/EGL_emulation( 3475): app_time_stats: avg=29985.95ms min=24.76ms max=59947.13ms count=2
+D/EGL_emulation( 3475): app_time_stats: avg=29970.92ms min=43.15ms max=59898.69ms count=2
+D/EGL_emulation( 3475): app_time_stats: avg=30042.91ms min=25.64ms max=60060.18ms count=2
+D/EGL_emulation( 3475): app_time_stats: avg=29990.03ms min=4.18ms max=59975.87ms count=2
+D/EGL_emulation( 3475): app_time_stats: avg=29983.66ms min=27.96ms max=59939.36ms count=2
+D/EGL_emulation( 3475): app_time_stats: avg=29999.88ms min=23.24ms max=59976.53ms count=2
+D/EGL_emulation( 3475): app_time_stats: avg=30018.92ms min=29.90ms max=60007.94ms count=2
+D/EGL_emulation( 3475): app_time_stats: avg=19995.26ms min=11.52ms max=59935.78ms count=3
+Lost connection to device.

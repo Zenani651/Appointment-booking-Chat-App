@@ -1,0 +1,206 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Chat room IDs are "<uidA>_<uidB>" (sorted), so a user belongs to a room
+    // only if their UID is one of the two halves of the ID.
+    function isMember(roomId) {
+      return signedIn() && request.auth.uid in roomId.split('_');
+    }
+
+    // The account type ("customer" or "business") of any user.
+    function roleOfUser(uid) {
+      return get(/databases/$(database)/documents/Users/$(uid))
+               .data.get('role', 'customer');
+    }
+
+    // True when the signed-in user's account type is "business".
+    function isBusiness() {
+      return signedIn() && roleOfUser(request.auth.uid) == 'business';
+    }
+
+    // True when two users have exchanged at least one message.
+    function hasChatted(a, b) {
+      return (exists(/databases/$(database)/documents/chat_rooms/$(a + '_' + b))
+              && get(/databases/$(database)/documents/chat_rooms/$(a + '_' + b))
+                   .data.get('lastMessage', null) != null)
+          || (exists(/databases/$(database)/documents/chat_rooms/$(b + '_' + a))
+              && get(/databases/$(database)/documents/chat_rooms/$(b + '_' + a))
+                   .data.get('lastMessage', null) != null);
+    }
+
+    // A display name, if present, must be a string of 1 to 30 characters.
+    function validDisplayName() {
+      return !('displayName' in request.resource.data)
+        || (request.resource.data.displayName is string
+            && request.resource.data.displayName.size() >= 1
+            && request.resource.data.displayName.size() <= 30);
+    }
+
+    // Optional text field with a maximum length.
+    function validText(field, max) {
+      return !(field in request.resource.data)
+        || (request.resource.data[field] is string
+            && request.resource.data[field].size() <= max);
+    }
+
+    // A new appointment request: pending, well-formed, and sent to a business.
+    function validBookingCreate() {
+      let b = request.resource.data.booking;
+      return b.keys().hasOnly(['service', 'dateTime', 'note', 'status'])
+        && b.status == 'pending'
+        && b['service'] is string
+        && b['service'].size() > 0
+        && b['service'].size() <= 60
+        && b.dateTime is timestamp
+        && (!('note' in b) || (b.note is string && b.note.size() <= 200))
+        && roleOfUser(request.resource.data.receiverID) == 'business';
+    }
+
+    // Only a pending booking's status may change:
+    //  - the receiver (business) can accept or decline,
+    //  - the sender (customer) can cancel.
+    function validBookingStatusChange() {
+      let before = resource.data;
+      let after = request.resource.data;
+      return before.get('type', 'text') == 'booking'
+        && after.diff(before).affectedKeys().hasOnly(['booking'])
+        && after.booking.diff(before.booking).affectedKeys().hasOnly(['status'])
+        && before.booking.status == 'pending'
+        && (
+          (request.auth.uid == before.receiverID
+            && after.booking.status in ['accepted', 'declined'])
+          || (request.auth.uid == before.senderID
+            && after.booking.status == 'cancelled')
+        );
+    }
+
+    // Public profile. Any signed-in user can read it (needed for the user
+    // list), but you can only create/update your own document.
+    // The role is chosen once at sign-up and can never change.
+    match /Users/{userId} {
+      allow read: if signedIn();
+
+      allow create: if signedIn() && request.auth.uid == userId
+        && request.resource.data.role in ['customer', 'business']
+        && validDisplayName();
+
+      allow update: if signedIn() && request.auth.uid == userId
+        && request.resource.data.get('role', null) == resource.data.get('role', null)
+        && validDisplayName();
+
+      allow delete: if false;
+    }
+
+    // Profile photos (small base64 images). Anyone signed in can view,
+    // only the owner can change or remove their own.
+    match /ProfilePhotos/{userId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.auth.uid == userId
+        && request.resource.data.data is string
+        && request.resource.data.data.size() < 300000;
+      allow delete: if signedIn() && request.auth.uid == userId;
+    }
+
+    // Public business details: announcement, opening/closing times ("HH:mm")
+    // and the appointment length in minutes. Only business accounts can
+    // write, and only to their own document; any signed-in user can read.
+    match /BusinessProfiles/{userId} {
+      allow read: if signedIn();
+      allow create, update: if isBusiness() && request.auth.uid == userId
+        && request.resource.data.keys().hasOnly(
+             ['description', 'hours', 'phone', 'address', 'updatedAt',
+              'announcement', 'opensAt', 'closesAt', 'slotMinutes'])
+        && validText('description', 300)
+        && validText('hours', 200)
+        && validText('phone', 20)
+        && validText('address', 150)
+        && validText('announcement', 200)
+        && validText('opensAt', 5)
+        && validText('closesAt', 5)
+        && (!('slotMinutes' in request.resource.data)
+            || (request.resource.data.slotMinutes is int
+                && request.resource.data.slotMinutes >= 15
+                && request.resource.data.slotMinutes <= 240));
+      allow delete: if false;
+    }
+
+    // Booked time slots. A slot's document ID is its start time, so a second
+    // booking of the same time is an update and is refused: no double booking.
+    // Customers reserve their own slot; the customer (cancel) or the business
+    // (decline) can free it again.
+    match /BusinessSlots/{businessId}/booked/{slotId} {
+      allow read: if signedIn();
+
+      allow create: if signedIn()
+        && roleOfUser(request.auth.uid) == 'customer'
+        && roleOfUser(businessId) == 'business'
+        && request.resource.data.keys().hasOnly(
+             ['customerID', 'start', 'createdAt'])
+        && request.resource.data.customerID == request.auth.uid
+        && request.resource.data.start is timestamp;
+
+      allow delete: if signedIn()
+        && (request.auth.uid == resource.data.customerID
+            || request.auth.uid == businessId);
+    }
+
+    // Reviews: one per customer per business (the document ID is the
+    // customer's UID). Only customers who have chatted with the business can
+    // write, and only their own review. A rating is a whole number 1-5.
+    match /BusinessReviews/{businessId}/reviews/{reviewerId} {
+      allow read: if signedIn();
+
+      allow create, update: if signedIn()
+        && request.auth.uid == reviewerId
+        && reviewerId != businessId
+        && roleOfUser(reviewerId) == 'customer'
+        && roleOfUser(businessId) == 'business'
+        && hasChatted(reviewerId, businessId)
+        && request.resource.data.keys().hasOnly(
+             ['rating', 'comment', 'reviewerID', 'reviewerName', 'updatedAt'])
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1
+        && request.resource.data.rating <= 5
+        && request.resource.data.reviewerID == request.auth.uid
+        && request.resource.data.reviewerName is string
+        && request.resource.data.reviewerName.size() > 0
+        && request.resource.data.reviewerName.size() <= 30
+        && validText('comment', 300);
+
+      allow delete: if signedIn() && request.auth.uid == reviewerId;
+    }
+
+    match /chat_rooms/{roomId} {
+      // Room summary (last message, unread counters).
+      allow read, write: if isMember(roomId);
+
+      match /messages/{messageId} {
+        allow read: if isMember(roomId);
+
+        // Must be sent as yourself, with a non-empty text of at most 2000
+        // chars. Messages are plain text or appointment requests.
+        allow create: if isMember(roomId)
+          && request.resource.data.senderID == request.auth.uid
+          && request.resource.data.message is string
+          && request.resource.data.message.size() > 0
+          && request.resource.data.message.size() <= 2000
+          && request.resource.data.get('type', 'text') in ['text', 'booking']
+          && (request.resource.data.get('type', 'text') != 'booking'
+              || validBookingCreate());
+
+        // You can only delete your own messages.
+        allow delete: if isMember(roomId)
+          && resource.data.senderID == request.auth.uid;
+
+        // Messages are never edited, except an appointment's status.
+        allow update: if isMember(roomId) && validBookingStatusChange();
+      }
+    }
+  }
+}
